@@ -52,22 +52,6 @@ def enviar_cache(dado):
     frame_cache.configure(fg_color="green")
     label_cache.configure(text=f"CACHE\n{dado}")
 
-def animar_fluxo():
-    y = 200
-
-    def mover():
-        nonlocal y
-
-        if y < 400:
-            y += 2
-            bola.place(x=500, y=y)
-            frame_inicio.after(10, mover)
-    
-    mover()
-
-def enviar():
-    executar()
-    animar_fluxo()
 # ==========================
 # TELA INICIAL
 # ==========================
@@ -118,7 +102,7 @@ entrada.bind("<Return>", executar)
 botao_enviar = ctk.CTkButton(
     frame_simulador,
     text="Enviar",
-    command=enviar
+    command=executar
 )
 botao_enviar.pack(pady=10)
 
