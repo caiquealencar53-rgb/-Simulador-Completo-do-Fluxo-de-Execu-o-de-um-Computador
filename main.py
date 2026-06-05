@@ -1,5 +1,6 @@
 import customtkinter as ctk
-
+from tkinter import PhotoImage
+from tkinter import Canvas
 # Aparência
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -8,6 +9,10 @@ ctk.set_default_color_theme("blue")
 janela = ctk.CTk()
 janela.title("Simulador Von Neumann")
 janela.geometry("1000x700")
+
+# ICONE COM TK
+icone = PhotoImage(file="Login.png")
+janela.iconphoto(True, icone)
 
 
 # ==========================
@@ -39,7 +44,30 @@ def enviar_ram(dado):
     frame_ram.configure(fg_color="green")
     label_ram.configure(text=f"RAM\n{dado}")
 
+    janela.after(1000, lambda: enviar_cache(dado))
 
+def enviar_cache(dado):
+    frame_ram.configure(fg_color=("gray20", "gray20"))
+
+    frame_cache.configure(fg_color="green")
+    label_cache.configure(text=f"CACHE\n{dado}")
+
+def animar_fluxo():
+    y = 200
+
+    def mover():
+        nonlocal y
+
+        if y < 400:
+            y += 2
+            bola.place(x=500, y=y)
+            frame_inicio.after(10, mover)
+    
+    mover()
+
+def enviar():
+    executar()
+    animar_fluxo()
 # ==========================
 # TELA INICIAL
 # ==========================
@@ -56,10 +84,12 @@ titulo.pack(pady=40)
 
 botao_inicio = ctk.CTkButton(
     frame_inicio,
+    width=200,
+    height=50,
     text="Executar",
     command=iniciar
 )
-botao_inicio.pack(pady=20)
+botao_inicio.pack(pady=100)
 
 
 # ==========================
@@ -88,17 +118,20 @@ entrada.bind("<Return>", executar)
 botao_enviar = ctk.CTkButton(
     frame_simulador,
     text="Enviar",
-    command=executar
+    command=enviar
 )
 botao_enviar.pack(pady=10)
 
+# ==========================
+# ÁREA DO FLUXO
+# ==========================
+
+fluxo = ctk.CTkFrame(frame_simulador)
+fluxo.pack(pady=30)
+
 # SSD
-frame_ssd = ctk.CTkFrame(
-    frame_simulador,
-    width=250,
-    height=80
-)
-frame_ssd.pack(pady=20)
+frame_ssd = ctk.CTkFrame(fluxo, width=250, height=80)
+frame_ssd.grid(row=0, column=0)
 
 label_ssd = ctk.CTkLabel(
     frame_ssd,
@@ -106,13 +139,17 @@ label_ssd = ctk.CTkLabel(
 )
 label_ssd.pack(expand=True)
 
-# RAM
-frame_ram = ctk.CTkFrame(
-    frame_simulador,
-    width=250,
-    height=80
+# SETA 1
+seta1 = ctk.CTkLabel(
+    fluxo,
+    text="↓",
+    font=("Arial", 40)
 )
-frame_ram.pack(pady=20)
+seta1.grid(row=1, column=0)
+
+# RAM
+frame_ram = ctk.CTkFrame(fluxo, width=250, height=80)
+frame_ram.grid(row=2, column=0)
 
 label_ram = ctk.CTkLabel(
     frame_ram,
@@ -120,9 +157,27 @@ label_ram = ctk.CTkLabel(
 )
 label_ram.pack(expand=True)
 
-# Mantém tamanho dos frames
-frame_ssd.pack_propagate(False)
-frame_ram.pack_propagate(False)
+# SETA 2
+seta2 = ctk.CTkLabel(
+    fluxo,
+    text="↓",
+    font=("Arial", 40)
+)
+seta2.grid(row=3, column=0)
+
+# CACHE
+frame_cache = ctk.CTkFrame(fluxo, width=250, height=80)
+frame_cache.grid(row=4, column=0)
+
+label_cache = ctk.CTkLabel(
+    frame_cache,
+    text="CACHE"
+)
+label_cache.pack(expand=True)
+
+frame_ssd.grid_propagate(False)
+frame_ram.grid_propagate(False)
+frame_cache.grid_propagate(False)
 
 # Executa
 janela.mainloop()
