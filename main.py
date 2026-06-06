@@ -52,6 +52,40 @@ def enviar_cache(dado):
     frame_cache.configure(fg_color="green")
     label_cache.configure(text=f"CACHE\n{dado}")
 
+    janela.after(1000, animar_cpu)
+
+def enviar_cpu(dado):
+    frame_cache.configure(fg_color=("gray20", "gray20"))
+
+    frame_cpu.configure(fg_color="green")
+    label_cpu.configure(text=f"CPU\n{dado}")
+
+def animar_cpu():
+
+    frame_cpu.configure(
+        width=320,
+        height=130,
+        fg_color="orange"
+    )
+
+    label_cpu.configure(
+        text="CPU\nPROCESSANDO..."
+    )
+
+    janela.after(1000, voltar_cpu)
+
+def voltar_cpu():
+
+    frame_cpu.configure(
+        width=250,
+        height=100,
+        fg_color=("gray20", "gray20")
+    )
+
+    label_cpu.configure(
+        text="CPU"
+    )
+
 # ==========================
 # TELA INICIAL
 # ==========================
@@ -159,9 +193,28 @@ label_cache = ctk.CTkLabel(
 )
 label_cache.pack(expand=True)
 
+# SETA 3
+seta3 = ctk.CTkLabel(
+    fluxo,
+    text="↓",
+    font=("Arial", 40)
+)
+seta3.grid(row=5, column=0)
+# CPU
+frame_cpu = ctk.CTkFrame(fluxo, width=250, height=100)
+frame_cpu.grid(row=6, column=0)
+
+label_cpu = ctk.CTkLabel(
+    frame_cpu,
+    text="CPU",
+    font=("Arial", 24, "bold")
+)
+label_cpu.pack(pady=30)
+
 frame_ssd.grid_propagate(False)
 frame_ram.grid_propagate(False)
 frame_cache.grid_propagate(False)
+frame_cpu.grid_propagate(False)
 
 # Executa
 janela.mainloop()
